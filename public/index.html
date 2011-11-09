@@ -1,0 +1,58 @@
+<!doctype html>
+
+<!--[if lt IE 7]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+
+    <title>TicTacToe</title>
+    <meta name="author" content="Attila Domokos <adomokos@gmail.com>">
+
+    <link rel="stylesheet" href="style/screen.css" media="screen, projection">
+
+    <script src="js/vendor/modernizr-1.6.min.js"></script>
+    <script src="js/vendor/jquery-1.5.1.min.js"></script>
+    <script src="js/vendor/underscore.js"></script>
+    <script src="js/vendor/backbone.js"></script>
+    <script src="js/TicTacToe.js"></script>
+
+    <!--
+    <script type="text/template" id="library-template">
+      <h1>Music Library</h1>
+      <ul class="albums"></ul>
+    </script>
+    -->
+    <script type="text/javascript">
+      initializeApp = function() {
+        var gameView;
+        window.App = window.theApp();
+        return gameView = new window.App.GameView();
+      };
+      $(document).ready(initializeApp);
+    </script>
+
+  </head>
+
+  <body>
+    <div id="container">
+      <ul>
+        <li id="1_1">&nbsp;</li>
+        <li id="1_2">&nbsp;</li>
+        <li id="1_3">&nbsp;</li>
+      </ul>
+      <ul>
+        <li id="2_1">&nbsp;</li>
+        <li id="2_2">&nbsp;</li>
+        <li id="2_3">&nbsp;</li>
+      </ul>
+      <ul>
+        <li id="3_1">&nbsp;</li>
+        <li id="3_2">&nbsp;</li>
+        <li id="3_3">&nbsp;</li>
+      </ul>
+    </div>
+  </body>
+</html>
