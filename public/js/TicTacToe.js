@@ -4,20 +4,20 @@
     App = {};
     App.GameBoard = Backbone.Model.extend({
       initialize: function() {
-        return this.shots = {};
+        return this.moves = {};
       },
-      shots: function() {
-        return this.shots;
+      moves: function() {
+        return this.moves;
       },
-      recordShot: function(location) {
-        if (this.shots[location] !== void 0) {
+      recordMove: function(location) {
+        if (this.moves[location] !== void 0) {
           throw "Cell is already taken";
         }
-        this.shots[location] = "x";
+        this.moves[location] = "x";
         return this.makeMove();
       },
       makeMove: function() {
-        return this.tryCells(['1_2', '1_3']);
+        return this.tryCells(['A_2', 'A_3']);
       },
       tryCells: function(locations) {
         var i, locationToSet, _results;
@@ -26,8 +26,8 @@
         while (i <= locations.length - 1) {
           locationToSet = locations[i];
           i++;
-          if (this.shots[locationToSet] === void 0) {
-            this.shots[locationToSet] = "o";
+          if (this.moves[locationToSet] === void 0) {
+            this.moves[locationToSet] = "o";
             return locationToSet;
           }
         }
@@ -48,7 +48,7 @@
           return;
         }
         try {
-          result = this.board.recordShot(source.target.id);
+          result = this.board.recordMove(source.target.id);
           $(source.target).html("x");
           return $("#" + result).html("o");
         } catch (error) {

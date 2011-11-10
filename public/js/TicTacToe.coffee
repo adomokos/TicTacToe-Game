@@ -3,28 +3,28 @@ window.theApp = ->
 
   App.GameBoard = Backbone.Model.extend({
     initialize: ->
-      @shots = {}
+      @moves = {}
 
-    shots: ->
-      @shots
+    moves: ->
+      @moves
 
-    recordShot: (location)->
-      unless @shots[location] == undefined
+    recordMove: (location)->
+      unless @moves[location] == undefined
         throw "Cell is already taken"
 
-      @shots[location] = "x"
+      @moves[location] = "x"
       this.makeMove()
 
     makeMove: ->
-      this.tryCells(['1_2', '1_3'])
+      this.tryCells(['A_2', 'A_3'])
 
     tryCells: (locations) ->
       i = 0
       while i <= locations.length-1
         locationToSet = locations[i]
         i++
-        if (@shots[locationToSet] == undefined)
-          @shots[locationToSet] = "o"
+        if (@moves[locationToSet] == undefined)
+          @moves[locationToSet] = "o"
           return locationToSet
   })
 
@@ -42,7 +42,7 @@ window.theApp = ->
       return if source.target == this.el[0]
 
       try
-        result = @board.recordShot(source.target.id)
+        result = @board.recordMove(source.target.id)
 
         $(source.target).html("x")
         $("##{result}").html("o")
