@@ -37,12 +37,12 @@ describe "GameBoard", ->
 
   describe "the AI moves", ->
     describe "the first move", ->
-      describe "when human plays A_1", ->
+      context "when human plays A_1", ->
         it "plays A_2", -> 
           @gameBoard.recordMove("A_1")
           (expect @gameBoard.moves['A_1']).toEqual "x"
           (expect @gameBoard.moves['A_2']).toEqual "o"
-      describe "when the human plays A_2", ->
+      context "when the human plays A_2", ->
         it "plays A_1", ->
           @gameBoard.recordMove("A_2")
           (expect @gameBoard.moves['A_1']).toEqual "o"

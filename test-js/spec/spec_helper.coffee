@@ -8,3 +8,4 @@ global.window = jsdom.jsdom().createWindow()
 global.document = global.window.document
 
 global.Backbone = require.call(global, 'backbone')
+global.context = global.describe
