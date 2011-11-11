@@ -9,31 +9,46 @@ describe "GameView", ->
     (expect gameView.events['click']).toEqual "clicked"
 
 describe "GameBoard", ->
+  App = window.theApp()
+
   beforeEach ->
-    App = window.theApp()
     @gameBoard = new App.GameBoard
 
   it "takes a move", ->
     @gameBoard.recordMove("A_1")
     (expect @gameBoard.moves['A_1']).toEqual "x"
 
-  it "records a second shot", ->
+  it "records a second move", ->
     @gameBoard.recordMove("A_1")
     @gameBoard.recordMove("3_1")
     (expect @gameBoard.moves['A_1']).toEqual "x"
     (expect @gameBoard.moves['3_1']).toEqual "x"
 
-  it "ignores shot at the same slot", ->
+  it "ignores move into the same slot", ->
     @gameBoard.recordMove("A_1")
-    (expect => @gameBoard.recordMove("A_1")).toThrow("Cell is already taken")
+    (expect => @gameBoard.recordMove("A_1")).toThrow("Cell is already taken") 
 
-  describe "the AI", ->
-    it "computer makes the first move", ->
+  describe "determining a winner", ->
+    it "is a win if there are three x's like \\", ->
       @gameBoard.recordMove("A_1")
-      (expect @gameBoard.moves['A_1']).toEqual "x"
-      (expect @gameBoard.moves['A_2']).toEqual "o"
+      @gameBoard.recordMove("B_2")
+      @gameBoard.recordMove("C_3")
+      (expect @gameBoard.result()).toEqual(App.X_WINS)
 
-    it "computer makes its second move", ->
+  describe "the AI moves", ->
+    describe "the first move", ->
+      describe "when human plays A_1", ->
+        it "plays A_2", -> 
+          @gameBoard.recordMove("A_1")
+          (expect @gameBoard.moves['A_1']).toEqual "x"
+          (expect @gameBoard.moves['A_2']).toEqual "o"
+      describe "when the human plays A_2", ->
+        it "plays A_1", ->
+          @gameBoard.recordMove("A_2")
+          (expect @gameBoard.moves['A_1']).toEqual "o"
+          (expect @gameBoard.moves['A_2']).toEqual "x"
+
+    it "the second move", ->
       result = @gameBoard.recordMove("A_1")
       (expect result).toEqual "A_2"
       result = @gameBoard.recordMove("2_2")

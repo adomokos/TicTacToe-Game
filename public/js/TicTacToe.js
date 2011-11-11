@@ -2,12 +2,16 @@
   window.theApp = function() {
     var App;
     App = {};
+    App.X_WINS = 1;
     App.GameBoard = Backbone.Model.extend({
       initialize: function() {
         return this.moves = {};
       },
       moves: function() {
         return this.moves;
+      },
+      result: function() {
+        return App.X_WINS;
       },
       recordMove: function(location) {
         if (this.moves[location] !== void 0) {
@@ -17,7 +21,7 @@
         return this.makeMove();
       },
       makeMove: function() {
-        return this.tryCells(['A_2', 'A_3']);
+        return this.tryCells(['A_1', 'A_2', 'A_3']);
       },
       tryCells: function(locations) {
         var i, locationToSet, _results;

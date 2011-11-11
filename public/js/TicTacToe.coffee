@@ -1,12 +1,17 @@
 window.theApp = ->
   App = {}
 
+  App.X_WINS = 1
+
   App.GameBoard = Backbone.Model.extend({
     initialize: ->
       @moves = {}
 
     moves: ->
       @moves
+
+    result: ->
+      App.X_WINS
 
     recordMove: (location)->
       unless @moves[location] == undefined
@@ -16,7 +21,7 @@ window.theApp = ->
       this.makeMove()
 
     makeMove: ->
-      this.tryCells(['A_2', 'A_3'])
+      this.tryCells(['A_1', 'A_2', 'A_3'])
 
     tryCells: (locations) ->
       i = 0
