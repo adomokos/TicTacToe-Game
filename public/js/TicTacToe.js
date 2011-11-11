@@ -3,6 +3,7 @@
     var App;
     App = {};
     App.X_WINS = 1;
+    App.O_WINS = 2;
     App.GameBoard = Backbone.Model.extend({
       initialize: function() {
         return this.moves = {};
@@ -11,7 +12,10 @@
         return this.moves;
       },
       result: function() {
-        return App.X_WINS;
+        if (this.moves['A_1'] === 'x') {
+          return App.X_WINS;
+        }
+        return App.O_WINS;
       },
       recordMove: function(location) {
         if (this.moves[location] !== void 0) {
@@ -21,7 +25,7 @@
         return this.makeMove();
       },
       makeMove: function() {
-        return this.tryCells(['A_1', 'A_2', 'A_3']);
+        return this.tryCells(['A_1', 'B_1', 'C_1']);
       },
       tryCells: function(locations) {
         var i, locationToSet, _results;

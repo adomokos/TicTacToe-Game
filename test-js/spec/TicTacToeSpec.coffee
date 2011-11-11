@@ -20,9 +20,9 @@ describe "GameBoard", ->
 
   it "records a second move", ->
     @gameBoard.recordMove("A_1")
-    @gameBoard.recordMove("3_1")
+    @gameBoard.recordMove("C_1")
     (expect @gameBoard.moves['A_1']).toEqual "x"
-    (expect @gameBoard.moves['3_1']).toEqual "x"
+    (expect @gameBoard.moves['C_1']).toEqual "x"
 
   it "ignores move into the same slot", ->
     @gameBoard.recordMove("A_1")
@@ -41,19 +41,35 @@ describe "GameBoard", ->
         it "plays A_2", -> 
           @gameBoard.recordMove("A_1")
           (expect @gameBoard.moves['A_1']).toEqual "x"
-          (expect @gameBoard.moves['A_2']).toEqual "o"
-      context "when the human plays A_2", ->
-        it "plays A_1", ->
-          @gameBoard.recordMove("A_2")
-          (expect @gameBoard.moves['A_1']).toEqual "o"
-          (expect @gameBoard.moves['A_2']).toEqual "x"
+          (expect @gameBoard.moves['B_1']).toEqual "o"
 
-    it "the second move", ->
-      result = @gameBoard.recordMove("A_1")
-      (expect result).toEqual "A_2"
-      result = @gameBoard.recordMove("2_2")
-      (expect result).toEqual "A_3"
-      (expect @gameBoard.moves['A_1']).toEqual "x"
-      (expect @gameBoard.moves['A_2']).toEqual "o"
-      (expect @gameBoard.moves['2_2']).toEqual "x"
-      (expect @gameBoard.moves['A_3']).toEqual "o"
+      context "when the human plays B_1", ->
+        it "plays A_1", ->
+          @gameBoard.recordMove("B_1")
+          (expect @gameBoard.moves['A_1']).toEqual "o"
+          (expect @gameBoard.moves['B_1']).toEqual "x"
+
+    describe "the second move", ->
+      context "with moves x A_1, o B_1, x B_2", ->
+        it "plays C_1", ->
+          result = @gameBoard.recordMove("A_1")
+          (expect result).toEqual "B_1"
+          result = @gameBoard.recordMove("B_2")
+          (expect result).toEqual "C_1"
+          (expect @gameBoard.moves['A_1']).toEqual "x"
+          (expect @gameBoard.moves['B_1']).toEqual "o"
+          (expect @gameBoard.moves['B_2']).toEqual "x"
+          (expect @gameBoard.moves['C_1']).toEqual "o"
+
+    describe "the third move", ->
+      context "with moves x A_2, o A_1, x B_2, o A_2, x B_3, ", ->
+        beforeEach ->
+          @gameBoard.recordMove("A_2")
+          @gameBoard.recordMove("B_2")
+          @gameBoard.recordMove("B_3")
+
+        it "plays C_1", ->
+          (expect @gameBoard.moves['C_1']).toEqual "o"
+
+        it "wins!", ->
+          (expect @gameBoard.result()).toEqual(App.O_WINS)
