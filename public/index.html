@@ -19,12 +19,6 @@
     <script src="js/vendor/backbone.js"></script>
     <script src="js/TicTacToe.js"></script>
 
-    <!--
-    <script type="text/template" id="library-template">
-      <h1>Music Library</h1>
-      <ul class="albums"></ul>
-    </script>
-    -->
     <script type="text/javascript">
       initializeApp = function() {
         var gameView;
@@ -38,21 +32,26 @@
 
   <body>
     <div id="container">
-      <ul>
-        <li id="A_1">&nbsp;</li>
-        <li id="B_1">&nbsp;</li>
-        <li id="C_1">&nbsp;</li>
-      </ul>
-      <ul>
-        <li id="A_2">&nbsp;</li>
-        <li id="B_2">&nbsp;</li>
-        <li id="C_2">&nbsp;</li>
-      </ul>
-      <ul>
-        <li id="A_3">&nbsp;</li>
-        <li id="B_3">&nbsp;</li>
-        <li id="C_3">&nbsp;</li>
-      </ul>
+      <div id="game_board">
+        <ul>
+          <li id="A_1">&nbsp;</li>
+          <li id="B_1">&nbsp;</li>
+          <li id="C_1">&nbsp;</li>
+        </ul>
+        <ul>
+          <li id="A_2">&nbsp;</li>
+          <li id="B_2">&nbsp;</li>
+          <li id="C_2">&nbsp;</li>
+        </ul>
+        <ul>
+          <li id="A_3">&nbsp;</li>
+          <li id="B_3">&nbsp;</li>
+          <li id="C_3">&nbsp;</li>
+        </ul>
+      <div>
+      <div class="result won">You won!</div>
+      <div class="result lost">The computer won... :-(</div>
+      <div class="result tie">Tie!!!</div>
     </div>
   </body>
 </html>

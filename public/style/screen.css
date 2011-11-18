@@ -31,3 +31,17 @@ li {
   min-height: 100%;
 	position: relative;
 }
+
+.result {
+  padding: 10px;
+  visibility: hidden;
+}
+.won {
+  color: #0C0;
+}
+.lost {
+  color: #C00;
+}
+.tie {
+  color: #00C;
+}
