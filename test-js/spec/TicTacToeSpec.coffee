@@ -71,7 +71,7 @@ describe "ScoreBoard", ->
     @gameBoard.moves['B_2'] = "o"
     @gameBoard.moves['C_1'] = "o"
     result = @scoreBoard.result(@gameBoard)
-    (expect result).toEqual App.X_WINS
+    (expect result).toEqual App.O_WINS
 
 describe "GameBoard", ->
   App = window.theApp()

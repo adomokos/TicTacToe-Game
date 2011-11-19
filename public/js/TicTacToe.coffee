@@ -19,17 +19,19 @@ window.theApp = ->
        ['A_3', 'B_2', 'C_1']]
 
     result: (gameBoard) ->
-      check_for_winners = (x_or_y) ->
+      check_for_winners = (x_or_o) ->
         for permutation in permutations
-          if(gameBoard.moves[permutation[0]] == x_or_y and
-               gameBoard.moves[permutation[1]] == x_or_y and
-                 gameBoard.moves[permutation[2]] == x_or_y)
-                   return App.X_WINS
+          if(gameBoard.moves[permutation[0]] == x_or_o and
+               gameBoard.moves[permutation[1]] == x_or_o and
+                 gameBoard.moves[permutation[2]] == x_or_o)
+                   return true
+
+        return false
 
       result = check_for_winners('x')
-      return result if result?
+      return App.X_WINS if result
       result = check_for_winners('o')
-      return result if result?
+      return App.O_WINS if result
 
       return App.UNDECIDED
 

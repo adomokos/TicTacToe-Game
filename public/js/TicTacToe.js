@@ -11,22 +11,23 @@
       permutations = [['A_1', 'B_1', 'C_1'], ['A_2', 'B_2', 'C_2'], ['A_3', 'B_3', 'C_3'], ['A_1', 'A_2', 'A_3'], ['B_1', 'B_2', 'B_3'], ['C_1', 'C_2', 'C_3'], ['A_1', 'B_2', 'C_3'], ['A_3', 'B_2', 'C_1']];
       ScoreBoard.prototype.result = function(gameBoard) {
         var check_for_winners, result;
-        check_for_winners = function(x_or_y) {
+        check_for_winners = function(x_or_o) {
           var permutation, _i, _len;
           for (_i = 0, _len = permutations.length; _i < _len; _i++) {
             permutation = permutations[_i];
-            if (gameBoard.moves[permutation[0]] === x_or_y && gameBoard.moves[permutation[1]] === x_or_y && gameBoard.moves[permutation[2]] === x_or_y) {
-              return App.X_WINS;
+            if (gameBoard.moves[permutation[0]] === x_or_o && gameBoard.moves[permutation[1]] === x_or_o && gameBoard.moves[permutation[2]] === x_or_o) {
+              return true;
             }
           }
+          return false;
         };
         result = check_for_winners('x');
-        if (result != null) {
-          return result;
+        if (result) {
+          return App.X_WINS;
         }
         result = check_for_winners('o');
-        if (result != null) {
-          return result;
+        if (result) {
+          return App.O_WINS;
         }
         return App.UNDECIDED;
       };
