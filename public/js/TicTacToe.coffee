@@ -20,7 +20,6 @@ window.theApp = ->
        ['A_3', 'B_2', 'C_1']]
 
     result: (gameBoard) ->
-
       check_for_winners = (x_or_o) ->
         found_matches = _.select(_.keys(gameBoard.moves), (item) ->
           return gameBoard.moves[item] == x_or_o
@@ -44,20 +43,31 @@ window.theApp = ->
   App.GameBoard = Backbone.Model.extend({
     initialize: ->
       @moves = {}
-      @scoreBoard = new App.ScoreBoard
 
     moves: ->
       @moves
 
     result: ->
-        @scoreBoard.result(this)
+      scoreBoard = new App.ScoreBoard
+      scoreBoard.result(this)
 
     recordMove: (location)->
       unless @moves[location] == undefined
         throw "Cell is already taken"
 
       @moves[location] = "x"
-      this.makeMove()
+
+      scoreBoardResult = @result()
+      if scoreBoardResult == App.X_WINS
+        return
+
+      ai_move = this.makeMove()
+
+      scoreBoardResult = @result()
+      #if scoreBoardResult == App.O_WINS
+        #console.log "o won"
+
+      ai_move
 
     makeMove: ->
       this.tryCells(['A_1', 'B_1', 'C_1'])

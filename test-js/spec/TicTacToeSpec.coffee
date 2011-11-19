@@ -86,6 +86,16 @@ describe "ScoreBoard", ->
     result = @scoreBoard.result(@gameBoard)
     (expect result).toEqual App.TIE
 
+  it "reports O_WINS when all cells are used and there is no winner", ->
+    @gameBoard.moves['A_2'] = "x"
+    @gameBoard.moves['A_1'] = "o"
+    @gameBoard.moves['B_2'] = "x"
+    @gameBoard.moves['B_1'] = "o"
+    @gameBoard.moves['B_3'] = "x"
+    @gameBoard.moves['C_1'] = "o"
+    result = @scoreBoard.result(@gameBoard)
+    (expect result).toEqual App.O_WINS
+
 describe "GameBoard", ->
   App = window.theApp()
 
@@ -150,4 +160,5 @@ describe "GameBoard", ->
           (expect @gameBoard.moves['C_1']).toEqual "o"
 
         it "wins!", ->
+          (expect _.keys(@gameBoard.moves).length).toEqual 6
           (expect @gameBoard.result()).toEqual(App.O_WINS)

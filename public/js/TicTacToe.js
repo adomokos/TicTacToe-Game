@@ -43,21 +43,29 @@
     })();
     App.GameBoard = Backbone.Model.extend({
       initialize: function() {
-        this.moves = {};
-        return this.scoreBoard = new App.ScoreBoard;
+        return this.moves = {};
       },
       moves: function() {
         return this.moves;
       },
       result: function() {
-        return this.scoreBoard.result(this);
+        var scoreBoard;
+        scoreBoard = new App.ScoreBoard;
+        return scoreBoard.result(this);
       },
       recordMove: function(location) {
+        var ai_move, scoreBoardResult;
         if (this.moves[location] !== void 0) {
           throw "Cell is already taken";
         }
         this.moves[location] = "x";
-        return this.makeMove();
+        scoreBoardResult = this.result();
+        if (scoreBoardResult === App.X_WINS) {
+          return;
+        }
+        ai_move = this.makeMove();
+        scoreBoardResult = this.result();
+        return ai_move;
       },
       makeMove: function() {
         return this.tryCells(['A_1', 'B_1', 'C_1']);
