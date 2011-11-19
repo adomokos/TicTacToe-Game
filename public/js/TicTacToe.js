@@ -4,18 +4,44 @@
     App = {};
     App.X_WINS = 1;
     App.O_WINS = 2;
+    App.UNDECIDED = 3;
+    App.ScoreBoard = (function() {
+      var permutations;
+      function ScoreBoard() {}
+      permutations = [['A_1', 'B_1', 'C_1'], ['A_2', 'B_2', 'C_2'], ['A_3', 'B_3', 'C_3'], ['A_1', 'A_2', 'A_3'], ['B_1', 'B_2', 'B_3'], ['C_1', 'C_2', 'C_3'], ['A_1', 'B_2', 'C_3'], ['A_3', 'B_2', 'C_1']];
+      ScoreBoard.prototype.result = function(gameBoard) {
+        var check_for_winners, result;
+        check_for_winners = function(x_or_y) {
+          var permutation, _i, _len;
+          for (_i = 0, _len = permutations.length; _i < _len; _i++) {
+            permutation = permutations[_i];
+            if (gameBoard.moves[permutation[0]] === x_or_y && gameBoard.moves[permutation[1]] === x_or_y && gameBoard.moves[permutation[2]] === x_or_y) {
+              return App.X_WINS;
+            }
+          }
+        };
+        result = check_for_winners('x');
+        if (result != null) {
+          return result;
+        }
+        result = check_for_winners('o');
+        if (result != null) {
+          return result;
+        }
+        return App.UNDECIDED;
+      };
+      return ScoreBoard;
+    })();
     App.GameBoard = Backbone.Model.extend({
       initialize: function() {
-        return this.moves = {};
+        this.moves = {};
+        return this.scoreBoard = new App.ScoreBoard;
       },
       moves: function() {
         return this.moves;
       },
       result: function() {
-        if (this.moves['A_1'] === 'x') {
-          return App.X_WINS;
-        }
-        return App.O_WINS;
+        return this.scoreBoard.result(this);
       },
       recordMove: function(location) {
         if (this.moves[location] !== void 0) {

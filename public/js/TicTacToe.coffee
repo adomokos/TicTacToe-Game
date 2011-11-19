@@ -3,19 +3,46 @@ window.theApp = ->
 
   App.X_WINS = 1
   App.O_WINS = 2
+  App.UNDECIDED = 3
+
+  class App.ScoreBoard
+    permutations =
+      [['A_1', 'B_1', 'C_1'],
+       ['A_2', 'B_2', 'C_2'],
+       ['A_3', 'B_3', 'C_3'],
+
+       ['A_1', 'A_2', 'A_3'],
+       ['B_1', 'B_2', 'B_3'],
+       ['C_1', 'C_2', 'C_3'],
+
+       ['A_1', 'B_2', 'C_3'],
+       ['A_3', 'B_2', 'C_1']]
+
+    result: (gameBoard) ->
+      check_for_winners = (x_or_y) ->
+        for permutation in permutations
+          if(gameBoard.moves[permutation[0]] == x_or_y and
+               gameBoard.moves[permutation[1]] == x_or_y and
+                 gameBoard.moves[permutation[2]] == x_or_y)
+                   return App.X_WINS
+
+      result = check_for_winners('x')
+      return result if result?
+      result = check_for_winners('o')
+      return result if result?
+
+      return App.UNDECIDED
 
   App.GameBoard = Backbone.Model.extend({
     initialize: ->
       @moves = {}
+      @scoreBoard = new App.ScoreBoard
 
     moves: ->
       @moves
 
     result: ->
-      if(this.moves['A_1'] == 'x')
-        return App.X_WINS
-
-      App.O_WINS
+        @scoreBoard.result(this)
 
     recordMove: (location)->
       unless @moves[location] == undefined
