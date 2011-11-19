@@ -5,6 +5,7 @@
     App.X_WINS = 1;
     App.O_WINS = 2;
     App.UNDECIDED = 3;
+    App.TIE = 4;
     App.ScoreBoard = (function() {
       var permutations;
       function ScoreBoard() {}
@@ -12,10 +13,14 @@
       ScoreBoard.prototype.result = function(gameBoard) {
         var check_for_winners, result;
         check_for_winners = function(x_or_o) {
-          var permutation, _i, _len;
+          var found_matches, matches, permutation, _i, _len;
+          found_matches = _.select(_.keys(gameBoard.moves), function(item) {
+            return gameBoard.moves[item] === x_or_o;
+          });
           for (_i = 0, _len = permutations.length; _i < _len; _i++) {
             permutation = permutations[_i];
-            if (gameBoard.moves[permutation[0]] === x_or_o && gameBoard.moves[permutation[1]] === x_or_o && gameBoard.moves[permutation[2]] === x_or_o) {
+            matches = _.intersect(found_matches, permutation);
+            if (matches.length === 3) {
               return true;
             }
           }
@@ -28,6 +33,9 @@
         result = check_for_winners('o');
         if (result) {
           return App.O_WINS;
+        }
+        if (_.keys(gameBoard.moves).length === 9) {
+          return App.TIE;
         }
         return App.UNDECIDED;
       };

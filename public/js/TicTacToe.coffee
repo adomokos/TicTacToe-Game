@@ -4,6 +4,7 @@ window.theApp = ->
   App.X_WINS = 1
   App.O_WINS = 2
   App.UNDECIDED = 3
+  App.TIE = 4
 
   class App.ScoreBoard
     permutations =
@@ -19,12 +20,15 @@ window.theApp = ->
        ['A_3', 'B_2', 'C_1']]
 
     result: (gameBoard) ->
+
       check_for_winners = (x_or_o) ->
+        found_matches = _.select(_.keys(gameBoard.moves), (item) ->
+          return gameBoard.moves[item] == x_or_o
+        )
+
         for permutation in permutations
-          if(gameBoard.moves[permutation[0]] == x_or_o and
-               gameBoard.moves[permutation[1]] == x_or_o and
-                 gameBoard.moves[permutation[2]] == x_or_o)
-                   return true
+          matches = _.intersect(found_matches, permutation)
+          return true if matches.length == 3
 
         return false
 
@@ -33,7 +37,9 @@ window.theApp = ->
       result = check_for_winners('o')
       return App.O_WINS if result
 
-      return App.UNDECIDED
+      return App.TIE if _.keys(gameBoard.moves).length == 9
+
+      App.UNDECIDED
 
   App.GameBoard = Backbone.Model.extend({
     initialize: ->
