@@ -44,9 +44,6 @@ window.theApp = ->
     initialize: ->
       @moves = {}
 
-    moves: ->
-      @moves
-
     result: ->
       scoreBoard = new App.ScoreBoard
       scoreBoard.result(@moves)
@@ -57,19 +54,21 @@ window.theApp = ->
 
       @moves[location] = "x"
 
-      scoreBoardResult = @result()
-      if scoreBoardResult == App.X_WINS
-        this.trigger('gameEnded', scoreBoardResult)
+      if @hasGameEnded()
+        this.trigger('gameEnded', @scoreBoardResult)
         return
 
       ai_move = this.makeMove()
 
-      scoreBoardResult = @result()
-      if scoreBoardResult == App.O_WINS
-        # fire the event that the game has ended
-        this.trigger('gameEnded', scoreBoardResult)
+      if @hasGameEnded()
+        this.trigger('gameEnded', @scoreBoardResult)
 
       ai_move
+
+   hasGameEnded: ->
+     @scoreBoardResult = @result()
+     return false if @scoreBoardResult == App.UNDECIDED
+     true
 
     makeMove: ->
       this.tryCells(['A_1', 'B_1', 'C_1'])

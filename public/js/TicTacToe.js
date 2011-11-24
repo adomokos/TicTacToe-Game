@@ -45,31 +45,33 @@
       initialize: function() {
         return this.moves = {};
       },
-      moves: function() {
-        return this.moves;
-      },
       result: function() {
         var scoreBoard;
         scoreBoard = new App.ScoreBoard;
         return scoreBoard.result(this.moves);
       },
       recordMove: function(location) {
-        var ai_move, scoreBoardResult;
+        var ai_move;
         if (this.moves[location] !== void 0) {
           throw "Cell is already taken";
         }
         this.moves[location] = "x";
-        scoreBoardResult = this.result();
-        if (scoreBoardResult === App.X_WINS) {
-          this.trigger('gameEnded', scoreBoardResult);
+        if (this.hasGameEnded()) {
+          this.trigger('gameEnded', this.scoreBoardResult);
           return;
         }
         ai_move = this.makeMove();
-        scoreBoardResult = this.result();
-        if (scoreBoardResult === App.O_WINS) {
-          this.trigger('gameEnded', scoreBoardResult);
+        if (this.hasGameEnded()) {
+          this.trigger('gameEnded', this.scoreBoardResult);
         }
         return ai_move;
+      },
+      hasGameEnded: function() {
+        this.scoreBoardResult = this.result();
+        if (this.scoreBoardResult === App.UNDECIDED) {
+          return false;
+        }
+        return true;
       },
       makeMove: function() {
         return this.tryCells(['A_1', 'B_1', 'C_1']);

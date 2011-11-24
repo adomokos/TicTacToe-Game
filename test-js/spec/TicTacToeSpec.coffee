@@ -120,7 +120,12 @@ describe "GameBoard", ->
 
   it "ignores move into the same slot", ->
     @gameBoard.recordMove("A_1")
-    (expect => @gameBoard.recordMove("A_1")).toThrow("Cell is already taken") 
+    (expect => @gameBoard.recordMove("A_1")).toThrow("Cell is already taken")
+
+  it "check's if the game has ended", ->
+    result = @gameBoard.hasGameEnded()
+    (expect result).toBeFalsy
+    (expect @gameBoard.scoreBoardResult).toEqual App.UNDECIDED
 
   describe "determining a winner", ->
     it "is a win if there are three x's like \\", ->
