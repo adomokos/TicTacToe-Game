@@ -19,10 +19,10 @@ window.theApp = ->
        ['A_1', 'B_2', 'C_3'],
        ['A_3', 'B_2', 'C_1']]
 
-    result: (gameBoard) ->
+    result: (moves) ->
       check_for_winners = (x_or_o) ->
-        found_matches = _.select(_.keys(gameBoard.moves), (item) ->
-          return gameBoard.moves[item] == x_or_o
+        found_matches = _.select(_.keys(moves), (item) ->
+          return moves[item] == x_or_o
         )
 
         for permutation in permutations
@@ -36,7 +36,7 @@ window.theApp = ->
       result = check_for_winners('o')
       return App.O_WINS if result
 
-      return App.TIE if _.keys(gameBoard.moves).length == 9
+      return App.TIE if _.keys(moves).length == 9
 
       App.UNDECIDED
 
@@ -49,7 +49,7 @@ window.theApp = ->
 
     result: ->
       scoreBoard = new App.ScoreBoard
-      scoreBoard.result(this)
+      scoreBoard.result(@moves)
 
     recordMove: (location)->
       unless @moves[location] == undefined

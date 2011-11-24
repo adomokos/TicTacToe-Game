@@ -10,12 +10,12 @@
       var permutations;
       function ScoreBoard() {}
       permutations = [['A_1', 'B_1', 'C_1'], ['A_2', 'B_2', 'C_2'], ['A_3', 'B_3', 'C_3'], ['A_1', 'A_2', 'A_3'], ['B_1', 'B_2', 'B_3'], ['C_1', 'C_2', 'C_3'], ['A_1', 'B_2', 'C_3'], ['A_3', 'B_2', 'C_1']];
-      ScoreBoard.prototype.result = function(gameBoard) {
+      ScoreBoard.prototype.result = function(moves) {
         var check_for_winners, result;
         check_for_winners = function(x_or_o) {
           var found_matches, matches, permutation, _i, _len;
-          found_matches = _.select(_.keys(gameBoard.moves), function(item) {
-            return gameBoard.moves[item] === x_or_o;
+          found_matches = _.select(_.keys(moves), function(item) {
+            return moves[item] === x_or_o;
           });
           for (_i = 0, _len = permutations.length; _i < _len; _i++) {
             permutation = permutations[_i];
@@ -34,7 +34,7 @@
         if (result) {
           return App.O_WINS;
         }
-        if (_.keys(gameBoard.moves).length === 9) {
+        if (_.keys(moves).length === 9) {
           return App.TIE;
         }
         return App.UNDECIDED;
@@ -51,7 +51,7 @@
       result: function() {
         var scoreBoard;
         scoreBoard = new App.ScoreBoard;
-        return scoreBoard.result(this);
+        return scoreBoard.result(this.moves);
       },
       recordMove: function(location) {
         var ai_move, scoreBoardResult;
