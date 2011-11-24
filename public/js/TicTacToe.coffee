@@ -59,13 +59,15 @@ window.theApp = ->
 
       scoreBoardResult = @result()
       if scoreBoardResult == App.X_WINS
+        this.trigger('gameEnded', scoreBoardResult)
         return
 
       ai_move = this.makeMove()
 
       scoreBoardResult = @result()
-      #if scoreBoardResult == App.O_WINS
-        #console.log "o won"
+      if scoreBoardResult == App.O_WINS
+        # fire the event that the game has ended
+        this.trigger('gameEnded', scoreBoardResult)
 
       ai_move
 
@@ -86,11 +88,12 @@ window.theApp = ->
     el: $("#container")
 
     events: {
-      'click': 'clicked'
+      'click': 'clicked',
     }
 
     initialize: ->
       @board = new App.GameBoard
+      @board.bind('gameEnded', this.onGameEnded)
 
     clicked: (source, eventArg) ->
       return if source.target == this.el[0]
@@ -104,6 +107,14 @@ window.theApp = ->
         console.log error
 
       #console.log("you clicked: " + source.target.id)
+
+    onGameEnded: (result) ->
+      if result == App.X_WINS
+        console.log "x won"
+      else if result == App.O_WINS
+        console.log "o won"
+      else
+        console.log "tie"
   })
 
   return App

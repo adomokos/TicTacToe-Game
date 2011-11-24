@@ -102,6 +102,12 @@ describe "GameBoard", ->
   beforeEach ->
     @gameBoard = new App.GameBoard
 
+  it "does not have moves when initialized", ->
+    (expect _.keys(@gameBoard.moves).length).toEqual 0
+
+  it "reports the result as UNDECIDED when initialized", ->
+    (expect @gameBoard.result()).toEqual App.UNDECIDED
+
   it "takes a move", ->
     @gameBoard.recordMove("A_1")
     (expect @gameBoard.moves['A_1']).toEqual "x"
@@ -122,6 +128,7 @@ describe "GameBoard", ->
       @gameBoard.recordMove("B_2")
       @gameBoard.recordMove("C_3")
       (expect @gameBoard.result()).toEqual(App.X_WINS)
+      (expect _.keys(@gameBoard.moves).length).toEqual 5
 
   describe "the AI moves", ->
     describe "the first move", ->

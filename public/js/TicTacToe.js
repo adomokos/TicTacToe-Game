@@ -61,10 +61,14 @@
         this.moves[location] = "x";
         scoreBoardResult = this.result();
         if (scoreBoardResult === App.X_WINS) {
+          this.trigger('gameEnded', scoreBoardResult);
           return;
         }
         ai_move = this.makeMove();
         scoreBoardResult = this.result();
+        if (scoreBoardResult === App.O_WINS) {
+          this.trigger('gameEnded', scoreBoardResult);
+        }
         return ai_move;
       },
       makeMove: function() {
@@ -91,7 +95,8 @@
         'click': 'clicked'
       },
       initialize: function() {
-        return this.board = new App.GameBoard;
+        this.board = new App.GameBoard;
+        return this.board.bind('gameEnded', this.onGameEnded);
       },
       clicked: function(source, eventArg) {
         var result;
@@ -104,6 +109,15 @@
           return $("#" + result).html("o");
         } catch (error) {
           return console.log(error);
+        }
+      },
+      onGameEnded: function(result) {
+        if (result === App.X_WINS) {
+          return console.log("x won");
+        } else if (result === App.O_WINS) {
+          return console.log("o won");
+        } else {
+          return console.log("tie");
         }
       }
     });
