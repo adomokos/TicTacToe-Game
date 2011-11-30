@@ -1,6 +1,6 @@
 require "#{__dirname}/spec_helper.coffee"
 
-game = require 'TicTacToe'
+game = require 'tic_tac_toe'
 
 describe "GameView", ->
   it "has events", ->
