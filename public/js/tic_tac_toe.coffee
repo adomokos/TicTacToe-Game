@@ -94,8 +94,10 @@ window.theApp = ->
       @board = new App.GameBoard
       @board.bind('gameEnded', this.onGameEnded)
 
-    clicked: (source, eventArg) ->
-      return if source.target == this.el[0]
+    clicked: (source) ->
+      unless source.target.id.match /A|B|C_1|2|3/
+        source.preventDefault
+        return
 
       try
         result = @board.recordMove(source.target.id)

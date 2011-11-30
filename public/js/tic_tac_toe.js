@@ -100,9 +100,10 @@
         this.board = new App.GameBoard;
         return this.board.bind('gameEnded', this.onGameEnded);
       },
-      clicked: function(source, eventArg) {
+      clicked: function(source) {
         var result;
-        if (source.target === this.el[0]) {
+        if (!source.target.id.match(/A|B|C_1|2|3/)) {
+          source.preventDefault;
           return;
         }
         try {
