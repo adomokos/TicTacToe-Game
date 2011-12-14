@@ -2,6 +2,7 @@ require "#{__dirname}/spec_helper.coffee"
 
 game = require 'tic_tac_toe'
 scoreBoard = require 'score_board'
+aiMove = require 'ai_move'
 
 describe "GameView", ->
   it "has events", ->

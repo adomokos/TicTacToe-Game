@@ -7,6 +7,7 @@ window.theApp = ->
   App.TIE = 4
 
   App.ScoreBoard = window.scoreBoard(App)
+  App.AIMove = window.aiMove(App)
 
   App.GameBoard = Backbone.Model.extend({
     initialize: ->

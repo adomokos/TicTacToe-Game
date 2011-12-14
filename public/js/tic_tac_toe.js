@@ -7,6 +7,7 @@
     App.UNDECIDED = 3;
     App.TIE = 4;
     App.ScoreBoard = window.scoreBoard(App);
+    App.AIMove = window.aiMove(App);
     App.GameBoard = Backbone.Model.extend({
       initialize: function() {
         return this.moves = {};
