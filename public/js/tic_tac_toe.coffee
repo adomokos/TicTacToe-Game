@@ -92,7 +92,7 @@ window.theApp = ->
 
     initialize: ->
       @board = new App.GameBoard
-      @board.bind('gameEnded', this.onGameEnded)
+      @board.bind('gameEnded', @onGameEnded, this)
 
     clicked: (source) ->
       unless source.target.id.match /A|B|C_1|2|3/
@@ -111,11 +111,11 @@ window.theApp = ->
 
     onGameEnded: (result) ->
       if result == App.X_WINS
-        console.log "x won"
+        $("#won").show()
       else if result == App.O_WINS
-        console.log "o won"
+        $("#lost").show()
       else
-        console.log "tie"
+        $("#tie").show()
   })
 
   return App

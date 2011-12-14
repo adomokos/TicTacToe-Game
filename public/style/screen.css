@@ -9,38 +9,41 @@ body {
 }
 
 ul {
-    background-color: #090;
-    list-style: none;
-    width: 100px;
-    line-height: normal;
+  background-color: #090;
+  list-style: none;
+  width: 100px;
+  line-height: normal;
 }
 li {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    float: left;
-    margin: 1px;
-    background-color: Silver;
-    text-align: center;
-    vertical-align: middle;
-    padding-top: 4px;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  float: left;
+  margin: 1px;
+  background-color: Silver;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 4px;
 }
 
 #container {
-  height: auto;
-  min-height: 100%;
-	position: relative;
+  /*height: auto;*/
+  /*min-height: 100%;*/
+}
+
+#game_board {
+  padding-right: 10px;
 }
 
 .result {
   padding: 10px;
-  visibility: hidden;
+  display: none;
 }
 .won {
-  color: #0C0;
+  color: #090;
 }
 .lost {
-  color: #C00;
+  color: #900;
 }
 .tie {
   color: #00C;

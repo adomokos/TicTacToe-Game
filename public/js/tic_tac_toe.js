@@ -98,7 +98,7 @@
       },
       initialize: function() {
         this.board = new App.GameBoard;
-        return this.board.bind('gameEnded', this.onGameEnded);
+        return this.board.bind('gameEnded', this.onGameEnded, this);
       },
       clicked: function(source) {
         var result;
@@ -116,11 +116,11 @@
       },
       onGameEnded: function(result) {
         if (result === App.X_WINS) {
-          return console.log("x won");
+          return $("#won").show();
         } else if (result === App.O_WINS) {
-          return console.log("o won");
+          return $("#lost").show();
         } else {
-          return console.log("tie");
+          return $("#tie").show();
         }
       }
     });
