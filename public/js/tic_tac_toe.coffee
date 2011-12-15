@@ -12,6 +12,7 @@ window.theApp = ->
   App.GameBoard = Backbone.Model.extend({
     initialize: ->
       @moves = {}
+      @aiMove = new App.AIMove
 
     result: ->
       scoreBoard = new App.ScoreBoard
@@ -40,16 +41,7 @@ window.theApp = ->
      true
 
     makeMove: ->
-      this.tryCells(['A_1', 'B_1', 'C_1'])
-
-    tryCells: (locations) ->
-      i = 0
-      while i <= locations.length-1
-        locationToSet = locations[i]
-        i++
-        if (@moves[locationToSet] == undefined)
-          @moves[locationToSet] = "o"
-          return locationToSet
+      @aiMove.next(@moves)
   })
 
   App.GameView = Backbone.View.extend({

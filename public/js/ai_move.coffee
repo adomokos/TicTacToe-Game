@@ -2,4 +2,8 @@ window.aiMove = (App)->
   class AIMove
 
     next: (moves)->
-      "A_1"
+      for row in App.ScoreBoard::PERMUTATIONS
+        for locationToSet in row
+          if (moves[locationToSet] == undefined)
+            moves[locationToSet] = "o"
+            return locationToSet

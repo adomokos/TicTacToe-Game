@@ -14,3 +14,7 @@ describe "AIMove", ->
 
   it "provides A_1 when there are no moves", ->
     (expect @aiMove.next(@gameBoard.moves)).toEqual("A_1")
+
+  it "provides B_1 when A_1 is taken", ->
+    @gameBoard.moves['A_1'] = 'x'
+    (expect @aiMove.next(@gameBoard.moves)).toEqual("B_1")

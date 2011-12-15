@@ -1,6 +1,6 @@
 window.scoreBoard = (App)->
   class ScoreBoard
-    permutations =
+    PERMUTATIONS:
       [['A_1', 'B_1', 'C_1'],
        ['A_2', 'B_2', 'C_2'],
        ['A_3', 'B_3', 'C_3'],
@@ -18,7 +18,7 @@ window.scoreBoard = (App)->
           return moves[item] == x_or_o
         )
 
-        for permutation in permutations
+        for permutation in ScoreBoard::PERMUTATIONS
           matches = _.intersect(found_matches, permutation)
           return true if matches.length == 3
 

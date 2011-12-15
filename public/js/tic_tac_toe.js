@@ -10,7 +10,8 @@
     App.AIMove = window.aiMove(App);
     App.GameBoard = Backbone.Model.extend({
       initialize: function() {
-        return this.moves = {};
+        this.moves = {};
+        return this.aiMove = new App.AIMove;
       },
       result: function() {
         var scoreBoard;
@@ -41,21 +42,7 @@
         return true;
       },
       makeMove: function() {
-        return this.tryCells(['A_1', 'B_1', 'C_1']);
-      },
-      tryCells: function(locations) {
-        var i, locationToSet, _results;
-        i = 0;
-        _results = [];
-        while (i <= locations.length - 1) {
-          locationToSet = locations[i];
-          i++;
-          if (this.moves[locationToSet] === void 0) {
-            this.moves[locationToSet] = "o";
-            return locationToSet;
-          }
-        }
-        return _results;
+        return this.aiMove.next(this.moves);
       }
     });
     App.GameView = Backbone.View.extend({
