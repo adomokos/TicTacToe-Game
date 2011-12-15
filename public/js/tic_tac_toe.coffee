@@ -25,13 +25,13 @@ window.theApp = ->
       @moves[location] = "x"
 
       if @hasGameEnded()
-        this.trigger('gameEnded', @scoreBoardResult)
+        @trigger('gameEnded', @scoreBoardResult)
         return
 
-      ai_move = this.makeMove()
+      ai_move = @makeMove()
 
       if @hasGameEnded()
-        this.trigger('gameEnded', @scoreBoardResult)
+        @trigger('gameEnded', @scoreBoardResult)
 
       ai_move
 
