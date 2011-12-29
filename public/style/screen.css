@@ -31,8 +31,21 @@ li {
   /*min-height: 100%;*/
 }
 
+#container {
+  overflow: hidden;
+}
+
 #game_board {
   padding-right: 10px;
+  /*float: left;*/
+  width: 120px;
+  overflow: hidden;
+}
+
+#result {
+  padding-top: 10px;
+  margin-left: 10px;
+  /*float: left;*/
 }
 
 .result {
