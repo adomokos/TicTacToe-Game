@@ -1,7 +1,7 @@
 require "#{__dirname}/spec_helper.coffee"
 
-game = require 'tic_tac_toe'
-scoreBoard = require 'score_board'
+game = require "#{jsDirPath}/tic_tac_toe"
+scoreBoard = require "#{jsDirPath}/score_board"
 
 describe "ScoreBoard", ->
   App = window.theApp()
