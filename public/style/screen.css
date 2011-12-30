@@ -8,17 +8,15 @@ body {
   font-family: Arial
 }
 
-ul {
-  background-color: #090;
-  list-style: none;
-  width: 100px;
+table {
+  padding-left: 20px;
+  padding-top: 20px;
   line-height: normal;
 }
-li {
-  display: inline-block;
+
+td {
   width: 30px;
   height: 30px;
-  float: left;
   margin: 1px;
   background-color: Silver;
   text-align: center;
@@ -32,13 +30,6 @@ li {
 }
 
 #container {
-  overflow: hidden;
-}
-
-#game_board {
-  padding-right: 10px;
-  /*float: left;*/
-  width: 120px;
   overflow: hidden;
 }
 

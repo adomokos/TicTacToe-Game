@@ -1,12 +1,14 @@
 (function() {
+
   window.aiMove = function(App) {
     var AIMove;
     return AIMove = (function() {
+
       function AIMove() {}
+
       AIMove.prototype.next = function(moves) {
-        var locationToSet, row, _i, _j, _len, _len2, _ref, _results;
+        var locationToSet, row, _i, _j, _len, _len2, _ref;
         _ref = App.ScoreBoard.prototype.PERMUTATIONS;
-        _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           row = _ref[_i];
           for (_j = 0, _len2 = row.length; _j < _len2; _j++) {
@@ -17,9 +19,11 @@
             }
           }
         }
-        return _results;
       };
+
       return AIMove;
+
     })();
   };
+
 }).call(this);

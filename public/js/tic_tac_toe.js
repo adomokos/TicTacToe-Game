@@ -1,4 +1,5 @@
 (function() {
+
   window.theApp = function() {
     var App;
     App = {};
@@ -20,25 +21,19 @@
       },
       recordMove: function(location) {
         var ai_move;
-        if (this.moves[location] !== void 0) {
-          throw "Cell is already taken";
-        }
+        if (this.moves[location] !== void 0) throw "Cell is already taken";
         this.moves[location] = "x";
         if (this.hasGameEnded()) {
           this.trigger('gameEnded', this.scoreBoardResult);
           return;
         }
         ai_move = this.makeMove();
-        if (this.hasGameEnded()) {
-          this.trigger('gameEnded', this.scoreBoardResult);
-        }
+        if (this.hasGameEnded()) this.trigger('gameEnded', this.scoreBoardResult);
         return ai_move;
       },
       hasGameEnded: function() {
         this.scoreBoardResult = this.result();
-        if (this.scoreBoardResult === App.UNDECIDED) {
-          return false;
-        }
+        if (this.scoreBoardResult === App.UNDECIDED) return false;
         return true;
       },
       makeMove: function() {
@@ -80,4 +75,5 @@
     });
     return App;
   };
+
 }).call(this);
