@@ -64,12 +64,13 @@
         }
       },
       onGameEnded: function(result) {
-        if (result === App.X_WINS) {
-          return $("#won").show();
-        } else if (result === App.O_WINS) {
-          return $("#lost").show();
-        } else {
-          return $("#tie").show();
+        switch (result) {
+          case App.X_WINS:
+            return $("#won").show();
+          case App.O_WINS:
+            return $("#lost").show();
+          default:
+            return $("#tie").show();
         }
       }
     });

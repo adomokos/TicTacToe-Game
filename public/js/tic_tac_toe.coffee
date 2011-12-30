@@ -71,12 +71,10 @@ window.theApp = ->
       #console.log("you clicked: " + source.target.id)
 
     onGameEnded: (result) ->
-      if result == App.X_WINS
-        $("#won").show()
-      else if result == App.O_WINS
-        $("#lost").show()
-      else
-        $("#tie").show()
+      switch result
+        when App.X_WINS then $("#won").show()
+        when App.O_WINS then $("#lost").show()
+        else $("#tie").show()
   })
 
   return App
