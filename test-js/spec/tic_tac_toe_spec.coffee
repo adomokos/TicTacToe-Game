@@ -5,10 +5,40 @@ scoreBoard = require "#{jsDirPath}/score_board"
 aiMove = require "#{jsDirPath}/ai_move"
 
 describe "GameView", ->
+  beforeEach ->
+    @theApp = window.theApp()
+    @gameView = new @theApp.GameView
+
+  it "has the #container as its el", ->
+    (expect @gameView.el.selector).toEqual('#container')
+
   it "has events", ->
-    App = window.theApp()
-    gameView = new App.GameView
-    (expect gameView.events['click']).toEqual "clicked"
+    (expect @gameView.events['click']).toEqual "clicked"
+
+  it "initializes the GameBoard", ->
+    (expect (@gameView.board instanceof @theApp.GameBoard)).toBeTruthy
+
+  describe "when game ends", ->
+    beforeEach ->
+      @resultSpy = spyOn($.fn, 'show')
+
+    describe "and X wins", ->
+      it "shows the #won div", ->
+        @gameView.onGameEnded(@theApp.X_WINS)
+        (expect @resultSpy).toHaveBeenCalled()
+        (expect @resultSpy.mostRecentCall.object.selector).toEqual('#won')
+
+    describe "and O wins", ->
+      it "shows the #lost div", ->
+        @gameView.onGameEnded(@theApp.O_WINS)
+        (expect @resultSpy).toHaveBeenCalled()
+        (expect @resultSpy.mostRecentCall.object.selector).toEqual('#lost')
+
+    describe "and the result is tie", ->
+      it "shows the #tie div", ->
+        @gameView.onGameEnded(@theApp.TIE)
+        (expect @resultSpy).toHaveBeenCalled()
+        (expect @resultSpy.mostRecentCall.object.selector).toEqual('#tie')
 
 describe "GameBoard", ->
   App = window.theApp()
