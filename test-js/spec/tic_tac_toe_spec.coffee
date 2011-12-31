@@ -40,6 +40,36 @@ describe "GameView", ->
         (expect @resultSpy).toHaveBeenCalled()
         (expect @resultSpy.mostRecentCall.object.selector).toEqual('#tie')
 
+  describe "clicked", ->
+    describe "when the click is outside of the board", ->
+      it "does not recognize it", ->
+        boardSpy = spyOn(@gameView.board, 'recordMove')
+        source = {
+          target: {
+            id: 'XYZ'
+          }
+        }
+        @gameView.clicked(source)
+        (expect boardSpy).not.toHaveBeenCalled()
+
+    describe "when the click was valid", ->
+      it "recognizes it", ->
+        boardSpy = spyOn(@gameView.board, 'recordMove').andReturn('B_1')
+        fieldMarker = spyOn($.fn, 'html')
+        source = {
+          target: {
+            id: 'A_1'
+          }
+        }
+
+        @gameView.clicked(source)
+        (expect boardSpy).toHaveBeenCalledWith('A_1')
+        (expect fieldMarker).toHaveBeenCalledWith('o')
+        (expect fieldMarker.calls.length).toEqual(2)
+        (expect fieldMarker.calls[0].object['0'].id).toEqual('A_1')
+        (expect fieldMarker.calls[0].args).toEqual(['x'])
+        (expect fieldMarker.mostRecentCall.object.selector).toEqual('#B_1')
+
 describe "GameBoard", ->
   App = window.theApp()
 
