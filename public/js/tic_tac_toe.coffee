@@ -53,12 +53,13 @@ window.theApp = ->
 
     initialize: ->
       @board = new App.GameBoard
-      @board.bind('gameEnded', @onGameEnded, this)
+      @board.bind('gameEnded', _.bind(@onGameEnded, this))
+      @disabled = false
 
     clicked: (source) ->
-      unless source.target.id.match /A|B|C_1|2|3/
-        source.preventDefault
-        return
+      return false if @disabled
+
+      return false unless source.target.id.match /A|B|C_1|2|3/
 
       try
         result = @board.recordMove(source.target.id)
@@ -71,6 +72,7 @@ window.theApp = ->
       #console.log("you clicked: " + source.target.id)
 
     onGameEnded: (result) ->
+      @disabled = true
       switch result
         when App.X_WINS then $("#won").show()
         when App.O_WINS then $("#lost").show()

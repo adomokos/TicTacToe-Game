@@ -47,14 +47,13 @@
       },
       initialize: function() {
         this.board = new App.GameBoard;
-        return this.board.bind('gameEnded', this.onGameEnded, this);
+        this.board.bind('gameEnded', _.bind(this.onGameEnded, this));
+        return this.disabled = false;
       },
       clicked: function(source) {
         var result;
-        if (!source.target.id.match(/A|B|C_1|2|3/)) {
-          source.preventDefault;
-          return;
-        }
+        if (this.disabled) return false;
+        if (!source.target.id.match(/A|B|C_1|2|3/)) return false;
         try {
           result = this.board.recordMove(source.target.id);
           $(source.target).html("x");
@@ -64,6 +63,7 @@
         }
       },
       onGameEnded: function(result) {
+        this.disabled = true;
         switch (result) {
           case App.X_WINS:
             return $("#won").show();

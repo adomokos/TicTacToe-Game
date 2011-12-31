@@ -18,9 +18,16 @@ describe "GameView", ->
   it "initializes the GameBoard", ->
     (expect (@gameView.board instanceof @theApp.GameBoard)).toBeTruthy
 
+  it "initializes the disabled field with false", ->
+    (expect @gameView.disabled).toBeFalsy()
+
   describe "when game ends", ->
     beforeEach ->
       @resultSpy = spyOn($.fn, 'show')
+
+    it "disables the Game", ->
+      @gameView.onGameEnded(@theApp.X_WINS)
+      (expect @gameView.disabled).toBeTruthy()
 
     describe "and X wins", ->
       it "shows the #won div", ->
@@ -41,6 +48,13 @@ describe "GameView", ->
         (expect @resultSpy.mostRecentCall.object.selector).toEqual('#tie')
 
   describe "clicked", ->
+    describe "when GameView is disabled", ->
+      it "does not recognizes clicks", ->
+        boardSpy = spyOn(@gameView.board, 'recordMove')
+        @gameView.onGameEnded(@theApp.O_WINS)
+        @gameView.clicked({})
+        (expect boardSpy).not.toHaveBeenCalled()
+
     describe "when the click is outside of the board", ->
       it "does not recognize it", ->
         boardSpy = spyOn(@gameView.board, 'recordMove')
