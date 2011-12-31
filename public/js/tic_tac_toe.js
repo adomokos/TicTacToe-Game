@@ -38,11 +38,22 @@
       },
       makeMove: function() {
         return this.aiMove.next(this.moves);
+      },
+      clearMoves: function() {
+        var properties, property, _i, _len, _results;
+        properties = _.keys(this.moves);
+        _results = [];
+        for (_i = 0, _len = properties.length; _i < _len; _i++) {
+          property = properties[_i];
+          _results.push(delete this.moves[property]);
+        }
+        return _results;
       }
     });
     App.GameView = Backbone.View.extend({
       el: $("#container"),
       events: {
+        'click #restart': 'onRestart',
         'click': 'clicked'
       },
       initialize: function() {
@@ -56,14 +67,36 @@
         if (!source.target.id.match(/A|B|C_1|2|3/)) return false;
         try {
           result = this.board.recordMove(source.target.id);
-          $(source.target).html("x");
-          return $("#" + result).html("o");
+          $(source.target).text("x");
+          return $("#" + result).text("o");
         } catch (error) {
           return console.log(error);
         }
       },
+      onRestart: function(sender, eventArgs) {
+        var _this = this;
+        this.disabled = false;
+        (function() {
+          var columnId, i, j, _i, _len, _ref;
+          _ref = ['A', 'B', 'C'];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            i = _ref[_i];
+            for (j = 1; j <= 3; j++) {
+              columnId = "#" + i + "_" + j;
+              $(columnId).text('');
+            }
+          }
+          _this.board.clearMoves();
+          $('#restart_container').hide();
+          $('#won').hide();
+          $('#lost').hide();
+          return $('#tie').hide();
+        })();
+        return false;
+      },
       onGameEnded: function(result) {
         this.disabled = true;
+        $('#restart_container').show();
         switch (result) {
           case App.X_WINS:
             return $("#won").show();

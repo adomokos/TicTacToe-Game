@@ -14,6 +14,7 @@ describe "GameView", ->
 
   it "has events", ->
     (expect @gameView.events['click']).toEqual "clicked"
+    (expect @gameView.events['click #restart']).toEqual "onRestart"
 
   it "initializes the GameBoard", ->
     (expect (@gameView.board instanceof @theApp.GameBoard)).toBeTruthy
@@ -69,7 +70,7 @@ describe "GameView", ->
     describe "when the click was valid", ->
       it "recognizes it", ->
         boardSpy = spyOn(@gameView.board, 'recordMove').andReturn('B_1')
-        fieldMarker = spyOn($.fn, 'html')
+        fieldMarker = spyOn($.fn, 'text')
         source = {
           target: {
             id: 'A_1'
@@ -84,11 +85,42 @@ describe "GameView", ->
         (expect fieldMarker.calls[0].args).toEqual(['x'])
         (expect fieldMarker.mostRecentCall.object.selector).toEqual('#B_1')
 
+  describe "onRestart", ->
+    it "sets the disabled field to true", ->
+      @gameView.disabled = true
+      @gameView.onRestart(null, null)
+      (expect @gameView.disabled).toBeFalsy()
+
+    it "calls the GameBoard's clearMoves() funciton", ->
+      boardSpy = spyOn(@gameView.board, 'clearMoves')
+
+      @gameView.onRestart(null, null)
+
+      (expect boardSpy).toHaveBeenCalled()
+
+    it "clears the the cells", ->
+      textSpy = spyOn($.fn, 'text')
+      hideSpy = spyOn($.fn, 'hide')
+
+      @gameView.onRestart(null, null)
+
+      (expect textSpy).toHaveBeenCalled()
+      (expect textSpy.calls.length).toEqual 9
+      (expect hideSpy).toHaveBeenCalled()
+      (expect hideSpy.calls.length).toEqual 4
+
 describe "GameBoard", ->
   App = window.theApp()
 
   beforeEach ->
     @gameBoard = new App.GameBoard
+
+  it "clears the moves for restart", ->
+    @gameBoard.recordMove("A_1")
+    @gameBoard.recordMove("A_2")
+    @gameBoard.clearMoves()
+
+    (expect @gameBoard.moves).toEqual({})
 
   it "does not have moves when initialized", ->
     (expect _.keys(@gameBoard.moves).length).toEqual 0
