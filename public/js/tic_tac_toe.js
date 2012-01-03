@@ -59,7 +59,12 @@
       initialize: function() {
         this.board = new App.GameBoard;
         this.board.bind('gameEnded', _.bind(this.onGameEnded, this));
-        return this.disabled = false;
+        this.disabled = false;
+        return this.counts = {
+          won: 0,
+          lost: 0,
+          tie: 0
+        };
       },
       clicked: function(source) {
         var result;
@@ -99,12 +104,28 @@
         $('#restart_container').show();
         switch (result) {
           case App.X_WINS:
-            return $("#won").show();
+            this.counts.won++;
+            return this._updateUIWith('won');
           case App.O_WINS:
-            return $("#lost").show();
+            this.counts.lost++;
+            return this._updateUIWith('lost');
           default:
-            return $("#tie").show();
+            this.counts.tie++;
+            return this._updateUIWith('tie');
         }
+      },
+      _updateUIWith: function(what) {
+        $("#" + what).show();
+        return this.el.find("span[id='" + what + "_count']").text(this.counts[what]);
+      },
+      wonCount: function() {
+        return this.counts['won'];
+      },
+      lostCount: function() {
+        return this.counts['lost'];
+      },
+      tieCount: function() {
+        return this.counts['tie'];
       }
     });
     return App;

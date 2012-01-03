@@ -22,31 +22,45 @@ describe "GameView", ->
   it "initializes the disabled field with false", ->
     (expect @gameView.disabled).toBeFalsy()
 
+  it "initializes the counters with 0", ->
+    (expect @gameView.wonCount()).toEqual(0)
+    (expect @gameView.lostCount()).toEqual(0)
+    (expect @gameView.tieCount()).toEqual(0)
+
   describe "when game ends", ->
     beforeEach ->
-      @resultSpy = spyOn($.fn, 'show')
+      @updateUIWithSpy = spyOn(@gameView, '_updateUIWith')
 
     it "disables the Game", ->
       @gameView.onGameEnded(@theApp.X_WINS)
       (expect @gameView.disabled).toBeTruthy()
 
     describe "and X wins", ->
-      it "shows the #won div", ->
+      it "updates the UI with 'won'", ->
         @gameView.onGameEnded(@theApp.X_WINS)
-        (expect @resultSpy).toHaveBeenCalled()
-        (expect @resultSpy.mostRecentCall.object.selector).toEqual('#won')
+        (expect @updateUIWithSpy).toHaveBeenCalledWith('won')
+
+      it "increments the wonCount by 1", ->
+        @gameView.onGameEnded(@theApp.X_WINS)
+        (expect @gameView.wonCount()).toEqual(1)
 
     describe "and O wins", ->
       it "shows the #lost div", ->
         @gameView.onGameEnded(@theApp.O_WINS)
-        (expect @resultSpy).toHaveBeenCalled()
-        (expect @resultSpy.mostRecentCall.object.selector).toEqual('#lost')
+        (expect @updateUIWithSpy).toHaveBeenCalledWith('lost')
+
+      it "increments the lostCount by 1", ->
+        @gameView.onGameEnded(@theApp.O_WINS)
+        (expect @gameView.lostCount()).toEqual(1)
 
     describe "and the result is tie", ->
       it "shows the #tie div", ->
         @gameView.onGameEnded(@theApp.TIE)
-        (expect @resultSpy).toHaveBeenCalled()
-        (expect @resultSpy.mostRecentCall.object.selector).toEqual('#tie')
+        (expect @updateUIWithSpy).toHaveBeenCalledWith('tie')
+
+      it "increments the tieCount by 1", ->
+        @gameView.onGameEnded(@theApp.TIE)
+        (expect @gameView.tieCount()).toEqual(1)
 
   describe "clicked", ->
     describe "when GameView is disabled", ->

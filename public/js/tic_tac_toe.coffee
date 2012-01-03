@@ -61,6 +61,11 @@ window.theApp = ->
       @board = new App.GameBoard
       @board.bind('gameEnded', _.bind(@onGameEnded, this))
       @disabled = false
+      @counts = {
+        won: 0,
+        lost: 0,
+        tie: 0
+      }
 
     clicked: (source) ->
       return false if @disabled
@@ -101,9 +106,28 @@ window.theApp = ->
       $('#restart_container').show()
 
       switch result
-        when App.X_WINS then $("#won").show()
-        when App.O_WINS then $("#lost").show()
-        else $("#tie").show()
+        when App.X_WINS
+          @counts.won++
+          @_updateUIWith('won')
+        when App.O_WINS
+          @counts.lost++
+          @_updateUIWith('lost')
+        else
+          @counts.tie++
+          @_updateUIWith('tie')
+
+    _updateUIWith: (what)->
+      $("##{what}").show()
+      @el.find("span[id='#{what}_count']").text(@counts[what])
+
+    wonCount: ->
+      @counts['won']
+
+    lostCount: ->
+      @counts['lost']
+
+    tieCount: ->
+      @counts['tie']
   })
 
   return App
