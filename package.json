@@ -1,0 +1,14 @@
+{
+  "name": "tic_tac_toe_dependencies",
+  "version": "0.0.1",
+  "engines": {
+    "node": "0.6.6"
+  },
+  "dependencies":{
+    "backbone": "0.5.3",
+    "jquery": "1.6.3",
+    "jsdom": "0.2.10",
+    "underscore": "1.2.3",
+    "jasmine-node": "1.0.13"
+  }
+}
