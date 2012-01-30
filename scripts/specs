@@ -1,9 +1,0 @@
-#!/bin/bash
-# Based on Gary Bernhardt's ideas
-
-if [ $# -ne 0 ]; then
-  command="node_modules/mocha/bin/mocha $1 $2"
-  $command
-else
-  node_modules/mocha/bin/mocha
-fi
