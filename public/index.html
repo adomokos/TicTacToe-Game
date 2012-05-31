@@ -17,18 +17,24 @@
     <script type="text/javascript" src="js/vendor/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="js/vendor/underscore.js"></script>
     <script type="text/javascript" src="js/vendor/backbone.js"></script>
+
+    <script type="text/javascript">
+      if(typeof exports === 'undefined') {
+        var exports = this['mymodule'] = {};
+      }
+
+      var initializeApp = function() {
+        var gameView = new exports.App.GameView({ el: $("#container") });
+        console.log(gameView);
+        return gameView;
+      };
+
+      $(document).ready(initializeApp);
+    </script>
+
     <script type="text/javascript" src="js/score_board.js"></script>
     <script type="text/javascript" src="js/ai_move.js"></script>
     <script type="text/javascript" src="js/tic_tac_toe.js"></script>
-
-    <script type="text/javascript">
-      var initializeApp = function() {
-        var gameView;
-        window.App = window.theApp();
-        return gameView = new window.App.GameView();
-      };
-      $(document).ready(initializeApp);
-    </script>
 
   </head>
 

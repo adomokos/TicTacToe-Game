@@ -1,133 +1,131 @@
-window.theApp = ->
-  App = {}
+App = {}
 
-  App.X_WINS = 1
-  App.O_WINS = 2
-  App.UNDECIDED = 3
-  App.TIE = 4
+App.X_WINS = 1
+App.O_WINS = 2
+App.UNDECIDED = 3
+App.TIE = 4
 
-  App.ScoreBoard = window.scoreBoard(App)
-  App.AIMove = window.aiMove(App)
+App.ScoreBoard = exports.ScoreBoard
+App.AIMove = exports.AIMove
 
-  App.GameBoard = Backbone.Model.extend({
-    initialize: ->
-      @moves = {}
-      @aiMove = new App.AIMove
+App.GameBoard = Backbone.Model.extend({
+  initialize: ->
+    @moves = {}
+    @aiMove = new App.AIMove
 
-    result: ->
-      scoreBoard = new App.ScoreBoard
-      scoreBoard.result(@moves)
+  result: ->
+    scoreBoard = new App.ScoreBoard
+    scoreBoard.result(@moves)
 
-    recordMove: (location)->
-      unless @moves[location] == undefined
-        throw "Cell is already taken"
+  recordMove: (location)->
+    unless @moves[location] == undefined
+      throw "Cell is already taken"
 
-      @moves[location] = "x"
+    @moves[location] = "x"
 
-      if @hasGameEnded()
-        @trigger('gameEnded', @scoreBoardResult)
-        return
+    if @hasGameEnded()
+      @trigger('gameEnded', @scoreBoardResult)
+      return
 
-      ai_move = @makeMove()
+    ai_move = @makeMove()
 
-      if @hasGameEnded()
-        @trigger('gameEnded', @scoreBoardResult)
+    if @hasGameEnded()
+      @trigger('gameEnded', @scoreBoardResult)
 
-      ai_move
+    ai_move
 
-   hasGameEnded: ->
-     @scoreBoardResult = @result()
-     return false if @scoreBoardResult == App.UNDECIDED
-     true
+  hasGameEnded: ->
+    @scoreBoardResult = @result()
+    return false if @scoreBoardResult == App.UNDECIDED
+    true
 
-    makeMove: ->
-      @aiMove.next(@moves)
+  makeMove: ->
+    @aiMove.next(@moves)
 
-    clearMoves: ->
-      properties = _.keys(@moves)
-      for property in properties
-        delete @moves[property]
-  })
+  clearMoves: ->
+    properties = _.keys(@moves)
+    for property in properties
+      delete @moves[property]
+})
 
-  App.GameView = Backbone.View.extend({
-    el: $("#container")
+App.GameView = Backbone.View.extend({
+  events: {
+    'click #restart': 'onRestart',
+    'click': 'clicked'
+  }
 
-    events: {
-      'click #restart': 'onRestart',
-      'click': 'clicked'
+  initialize: ->
+    @board = new App.GameBoard
+    @board.bind('gameEnded', _.bind(@onGameEnded, this))
+    @disabled = false
+    @counts = {
+      won: 0,
+      lost: 0,
+      tie: 0
     }
+    console.log 'init the app'
 
-    initialize: ->
-      @board = new App.GameBoard
-      @board.bind('gameEnded', _.bind(@onGameEnded, this))
-      @disabled = false
-      @counts = {
-        won: 0,
-        lost: 0,
-        tie: 0
-      }
+  clicked: (source) ->
+    return false if @disabled
 
-    clicked: (source) ->
-      return false if @disabled
+    return false unless source.target.id.match /A|B|C_1|2|3/
 
-      return false unless source.target.id.match /A|B|C_1|2|3/
+    try
+      result = @board.recordMove(source.target.id)
 
-      try
-        result = @board.recordMove(source.target.id)
+      $(source.target).text("x")
+      $("##{result}").text("o")
+    catch error
+      console.log error
 
-        $(source.target).text("x")
-        $("##{result}").text("o")
-      catch error
-        console.log error
+    #console.log("you clicked: " + source.target.id)
 
-      #console.log("you clicked: " + source.target.id)
+  onRestart: (sender, eventArgs) ->
+    @disabled = false
 
-    onRestart: (sender, eventArgs) ->
-      @disabled = false
+    (=>
+      for i in ['A', 'B', 'C']
+        for j in [1..3]
+          columnId = "##{i}_#{j}"
+          $(columnId).text('')
 
-      (=>
-        for i in ['A', 'B', 'C']
-          for j in [1..3]
-            columnId = "##{i}_#{j}"
-            $(columnId).text('')
+      @board.clearMoves()
 
-        @board.clearMoves()
+      $('#restart_container').hide()
+      $('#won').hide()
+      $('#lost').hide()
+      $('#tie').hide()
+    )()
 
-        $('#restart_container').hide()
-        $('#won').hide()
-        $('#lost').hide()
-        $('#tie').hide()
-      )()
+    return false
 
-      return false
+  onGameEnded: (result) ->
+    @disabled = true
+    $('#restart_container').show()
 
-    onGameEnded: (result) ->
-      @disabled = true
-      $('#restart_container').show()
+    switch result
+      when App.X_WINS
+        @counts.won++
+        @_updateUIWith('won')
+      when App.O_WINS
+        @counts.lost++
+        @_updateUIWith('lost')
+      else
+        @counts.tie++
+        @_updateUIWith('tie')
 
-      switch result
-        when App.X_WINS
-          @counts.won++
-          @_updateUIWith('won')
-        when App.O_WINS
-          @counts.lost++
-          @_updateUIWith('lost')
-        else
-          @counts.tie++
-          @_updateUIWith('tie')
+  _updateUIWith: (what)->
+    $("##{what}").show()
+    @el.find("span[id='#{what}_count']").text(@counts[what])
 
-    _updateUIWith: (what)->
-      $("##{what}").show()
-      @el.find("span[id='#{what}_count']").text(@counts[what])
+  wonCount: ->
+    @counts['won']
 
-    wonCount: ->
-      @counts['won']
+  lostCount: ->
+    @counts['lost']
 
-    lostCount: ->
-      @counts['lost']
+  tieCount: ->
+    @counts['tie']
+})
 
-    tieCount: ->
-      @counts['tie']
-  })
-
-  return App
+exports.App = App

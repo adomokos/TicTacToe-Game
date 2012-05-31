@@ -1,29 +1,29 @@
 (function() {
+  var AIMove;
 
-  window.aiMove = function(App) {
-    var AIMove;
-    return AIMove = (function() {
+  AIMove = (function() {
 
-      function AIMove() {}
+    function AIMove() {}
 
-      AIMove.prototype.next = function(moves) {
-        var locationToSet, row, _i, _j, _len, _len2, _ref;
-        _ref = App.ScoreBoard.prototype.PERMUTATIONS;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          row = _ref[_i];
-          for (_j = 0, _len2 = row.length; _j < _len2; _j++) {
-            locationToSet = row[_j];
-            if (moves[locationToSet] === void 0) {
-              moves[locationToSet] = "o";
-              return locationToSet;
-            }
+    AIMove.prototype.next = function(moves) {
+      var locationToSet, row, _i, _j, _len, _len2, _ref;
+      _ref = exports.ScoreBoard.prototype.PERMUTATIONS;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        row = _ref[_i];
+        for (_j = 0, _len2 = row.length; _j < _len2; _j++) {
+          locationToSet = row[_j];
+          if (moves[locationToSet] === void 0) {
+            moves[locationToSet] = "o";
+            return locationToSet;
           }
         }
-      };
+      }
+    };
 
-      return AIMove;
+    return AIMove;
 
-    })();
-  };
+  })();
+
+  exports.AIMove = AIMove;
 
 }).call(this);
