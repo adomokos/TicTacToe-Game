@@ -1,5 +1,9 @@
 (function() {
-  var ScoreBoard;
+  var AIMove, App, ScoreBoard;
+
+  AIMove = require('./ai_move');
+
+  App = require("./tic_tac_toe");
 
   ScoreBoard = (function() {
 
@@ -23,17 +27,17 @@
         return false;
       };
       result = check_for_winners('x');
-      if (result) return exports.App.X_WINS;
+      if (result) return App.X_WINS;
       result = check_for_winners('o');
-      if (result) return exports.App.O_WINS;
-      if (_.keys(moves).length === 9) return exports.App.TIE;
-      return exports.App.UNDECIDED;
+      if (result) return App.O_WINS;
+      if (_.keys(moves).length === 9) return App.TIE;
+      return App.UNDECIDED;
     };
 
     return ScoreBoard;
 
   })();
 
-  exports.ScoreBoard = ScoreBoard;
+  module.exports = ScoreBoard;
 
 }).call(this);

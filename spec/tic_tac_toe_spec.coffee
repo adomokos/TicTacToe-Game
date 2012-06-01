@@ -1,13 +1,12 @@
 require "#{__dirname}/spec_helper.coffee"
 
-game = require "#{jsDirPath}/tic_tac_toe"
-scoreBoard = require "#{jsDirPath}/score_board"
-aiMove = require "#{jsDirPath}/ai_move"
+App = require "#{jsDirPath}/tic_tac_toe"
+ScoreBoard = require "#{jsDirPath}/score_board"
+AIMove = require "#{jsDirPath}/ai_move"
 
 describe "GameView", ->
   beforeEach ->
-    @app = window.theApp()
-    @gameView = new @app.GameView
+    @gameView = new App.GameView({el: $("#container")})
 
   it "has the #container as its el", ->
     @gameView.el.selector.should.equal '#container'
@@ -17,7 +16,7 @@ describe "GameView", ->
     @gameView.events['click #restart'].should.equal 'onRestart'
 
   it "initializes the GameBoard", ->
-    (@gameView.board  instanceof @app.GameBoard).should.be.true
+    (@gameView.board  instanceof App.GameBoard).should.be.true
 
   it "initializes the disabled field with false", ->
     @gameView.disabled.should.be.false
@@ -32,41 +31,41 @@ describe "GameView", ->
       @updateUIWithSpy = sinon.spy(@gameView, '_updateUIWith')
 
     it "disables the Game", ->
-      @gameView.onGameEnded(@app.X_WINS)
+      @gameView.onGameEnded(App.X_WINS)
       @gameView.disabled.should.be.true
 
     describe "and X wins", ->
       it "updates the UI with 'won'", ->
-        @gameView.onGameEnded(@app.X_WINS)
+        @gameView.onGameEnded(App.X_WINS)
         @updateUIWithSpy.calledWith('won').should.be.true
 
       it "increments the wonCount by 1", ->
-        @gameView.onGameEnded(@app.X_WINS)
+        @gameView.onGameEnded(App.X_WINS)
         @gameView.wonCount().should.equal 1
 
     describe "and O wins", ->
       it "shows the #lost div", ->
-        @gameView.onGameEnded(@app.O_WINS)
+        @gameView.onGameEnded(App.O_WINS)
         @updateUIWithSpy.calledWith('lost').should.be.true
 
       it "increments the lostCount by 1", ->
-        @gameView.onGameEnded(@app.O_WINS)
+        @gameView.onGameEnded(App.O_WINS)
         @gameView.lostCount().should.equal 1
 
     describe "and the result is tie", ->
       it "shows the #tie div", ->
-        @gameView.onGameEnded(@app.TIE)
+        @gameView.onGameEnded(App.TIE)
         @updateUIWithSpy.calledWith('tie').should.be.true
 
       it "increments the tieCount by 1", ->
-        @gameView.onGameEnded(@app.TIE)
+        @gameView.onGameEnded(App.TIE)
         @gameView.tieCount().should.equal 1
 
   describe "clicked", ->
     describe "when GameView is disabled", ->
       it "does not recognizes clicks", ->
         boardSpy = sinon.spy(@gameView.board, 'recordMove')
-        @gameView.onGameEnded(@app.O_WINS)
+        @gameView.onGameEnded(App.O_WINS)
         @gameView.clicked({})
         boardSpy.called.should.be.false
 
@@ -124,8 +123,7 @@ describe "GameView", ->
 describe "GameBoard", ->
 
   beforeEach ->
-    @app = window.theApp()
-    @gameBoard = new @app.GameBoard
+    @gameBoard = new App.GameBoard
 
   it "clears the moves for restart", ->
     @gameBoard.recordMove("A_1")
@@ -138,7 +136,7 @@ describe "GameBoard", ->
     _.keys(@gameBoard.moves).should.be.empty
 
   it "reports the result as UNDECIDED when initialized", ->
-    @gameBoard.result().should.equal @app.UNDECIDED
+    @gameBoard.result().should.equal App.UNDECIDED
 
   it "takes a move", ->
     @gameBoard.recordMove("A_1")
@@ -157,14 +155,14 @@ describe "GameBoard", ->
   it "check's if the game has ended", ->
     result = @gameBoard.hasGameEnded()
     result.should.be.false
-    @gameBoard.scoreBoardResult.should.equal @app.UNDECIDED
+    @gameBoard.scoreBoardResult.should.equal App.UNDECIDED
 
   describe "determining a winner", ->
     it "is a win if there are three x's like \\", ->
       @gameBoard.recordMove("A_1")
       @gameBoard.recordMove("B_2")
       @gameBoard.recordMove("C_3")
-      @gameBoard.result().should.equal @app.X_WINS
+      @gameBoard.result().should.equal App.X_WINS
       _.keys(@gameBoard.moves).should.have.length 5
 
   describe "the AI moves", ->
@@ -205,4 +203,4 @@ describe "GameBoard", ->
 
         it "wins!", ->
           _.keys(@gameBoard.moves).should.have.length 6
-          @gameBoard.result().should.equal @app.O_WINS
+          @gameBoard.result().should.equal App.O_WINS

@@ -18,23 +18,17 @@
     <script type="text/javascript" src="js/vendor/underscore.js"></script>
     <script type="text/javascript" src="js/vendor/backbone.js"></script>
 
-    <script type="text/javascript">
-      if(typeof exports === 'undefined') {
-        var exports = this['mymodule'] = {};
-      }
+    <script type="text/javascript" src="js/application.js"></script>
 
+    <script type="text/javascript">
+      var App = require('./tic_tac_toe');
       var initializeApp = function() {
-        var gameView = new exports.App.GameView({ el: $("#container") });
-        console.log(gameView);
+        var gameView = new App.GameView({ el: $("#container") });
         return gameView;
       };
 
       $(document).ready(initializeApp);
     </script>
-
-    <script type="text/javascript" src="js/score_board.js"></script>
-    <script type="text/javascript" src="js/ai_move.js"></script>
-    <script type="text/javascript" src="js/tic_tac_toe.js"></script>
 
   </head>
 

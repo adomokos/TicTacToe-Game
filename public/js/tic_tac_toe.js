@@ -1,7 +1,6 @@
 (function() {
-  var App;
 
-  App = {};
+  if (typeof App === "undefined" || App === null) App = {};
 
   App.X_WINS = 1;
 
@@ -11,18 +10,14 @@
 
   App.TIE = 4;
 
-  App.ScoreBoard = exports.ScoreBoard;
-
-  App.AIMove = exports.AIMove;
-
   App.GameBoard = Backbone.Model.extend({
     initialize: function() {
       this.moves = {};
-      return this.aiMove = new App.AIMove;
+      return this.aiMove = new (require('./ai_move'));
     },
     result: function() {
       var scoreBoard;
-      scoreBoard = new App.ScoreBoard;
+      scoreBoard = new (require('./score_board'));
       return scoreBoard.result(this.moves);
     },
     recordMove: function(location) {
@@ -66,12 +61,11 @@
       this.board = new App.GameBoard;
       this.board.bind('gameEnded', _.bind(this.onGameEnded, this));
       this.disabled = false;
-      this.counts = {
+      return this.counts = {
         won: 0,
         lost: 0,
         tie: 0
       };
-      return console.log('init the app');
     },
     clicked: function(source) {
       var result;
@@ -136,6 +130,6 @@
     }
   });
 
-  exports.App = App;
+  module.exports = App;
 
 }).call(this);

@@ -1,3 +1,6 @@
+AIMove = require './ai_move'
+App = require("./tic_tac_toe")
+
 class ScoreBoard
   PERMUTATIONS:
     [['A_1', 'B_1', 'C_1'],
@@ -24,12 +27,12 @@ class ScoreBoard
       return false
 
     result = check_for_winners('x')
-    return exports.App.X_WINS if result
+    return App.X_WINS if result
     result = check_for_winners('o')
-    return exports.App.O_WINS if result
+    return App.O_WINS if result
 
-    return exports.App.TIE if _.keys(moves).length == 9
+    return App.TIE if _.keys(moves).length == 9
 
-    exports.App.UNDECIDED
+    App.UNDECIDED
 
-exports.ScoreBoard = ScoreBoard
+module.exports = ScoreBoard

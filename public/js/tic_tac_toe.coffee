@@ -1,20 +1,20 @@
-App = {}
+#ScoreBoard = require './score_board'
+#AIMove = require './ai_move'
+
+App ?= {}
 
 App.X_WINS = 1
 App.O_WINS = 2
 App.UNDECIDED = 3
 App.TIE = 4
 
-App.ScoreBoard = exports.ScoreBoard
-App.AIMove = exports.AIMove
-
 App.GameBoard = Backbone.Model.extend({
   initialize: ->
     @moves = {}
-    @aiMove = new App.AIMove
+    @aiMove = new (require('./ai_move'))
 
   result: ->
-    scoreBoard = new App.ScoreBoard
+    scoreBoard = new (require('./score_board'))
     scoreBoard.result(@moves)
 
   recordMove: (location)->
@@ -63,7 +63,6 @@ App.GameView = Backbone.View.extend({
       lost: 0,
       tie: 0
     }
-    console.log 'init the app'
 
   clicked: (source) ->
     return false if @disabled
@@ -128,4 +127,4 @@ App.GameView = Backbone.View.extend({
     @counts['tie']
 })
 
-exports.App = App
+module.exports = App
