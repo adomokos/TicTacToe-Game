@@ -1,0 +1,12 @@
+#!/bin/bash
+
+runmocha() {
+  if [ -e "$1" ]
+  then
+    node_modules/mocha/bin/mocha $1 --require coffee-script
+  else
+    ./node_modules/mocha/bin/mocha spec/*.coffee --require coffee-script
+  fi
+}
+
+runmocha $1
